@@ -6,9 +6,6 @@ set -ve
 go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
 go install github.com/noble-gase/og/cmd/protoc-gen-og@latest
 
-# buf
-go install github.com/bufbuild/buf/cmd/buf@latest
-
 # tag
 go install github.com/favadi/protoc-go-inject-tag@latest
 
