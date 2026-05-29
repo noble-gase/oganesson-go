@@ -5,7 +5,7 @@
 ## 安装
 
 ```shell
-go install github.com/noble-gase/og/cmd/protoc-gen-og@latest
+go install github.com/noble-gase/oganesson/cmd/protoc-gen-og@latest
 ```
 
 ## 使用

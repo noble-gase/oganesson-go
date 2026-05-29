@@ -7,7 +7,7 @@ import (
 	"os"
 	"os/exec"
 
-	"github.com/noble-gase/og/internal"
+	"github.com/noble-gase/oganesson/internal"
 	"github.com/spf13/cobra"
 	"golang.org/x/mod/modfile"
 )
@@ -17,7 +17,7 @@ func main() {
 		Use:     "og",
 		Short:   "project scaffold",
 		Long:    "project scaffold, quickly create a Go project",
-		Version: "v0.11.3",
+		Version: "v0.0.1",
 		PersistentPreRun: func(cmd *cobra.Command, args []string) {
 			if cmd.Use == "new" && len(args) != 0 {
 				if err := os.MkdirAll(args[0], 0o775); err != nil {

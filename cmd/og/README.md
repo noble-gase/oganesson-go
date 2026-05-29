@@ -10,7 +10,7 @@
 ## 安装
 
 ```shell
-go install github.com/noble-gase/og/cmd/og@latest
+go install github.com/noble-gase/oganesson/cmd/og@latest
 ```
 
 ## 创建项目

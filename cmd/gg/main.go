@@ -14,7 +14,7 @@ import (
 	"sync"
 	"text/template"
 
-	"github.com/noble-gase/og/internal"
+	"github.com/noble-gase/oganesson/internal"
 	"github.com/spf13/cobra"
 	"golang.org/x/tools/go/packages"
 )
@@ -117,7 +117,7 @@ func main() {
 		Use:     "gg",
 		Short:   "generate Get methods",
 		Long:    "generate Get methods for structs to avoid panic caused by nil pointer",
-		Version: "v0.2.0",
+		Version: "v0.0.1",
 		Example: internal.CmdExamples(
 			"👉 -- CLI --",
 			"gg --path .",

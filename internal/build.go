@@ -13,12 +13,12 @@ import (
 	"strings"
 	"text/template"
 
-	"github.com/noble-gase/og/internal/agent"
-	"github.com/noble-gase/og/internal/ent"
-	"github.com/noble-gase/og/internal/grpc"
-	"github.com/noble-gase/og/internal/http"
-	"github.com/noble-gase/og/internal/mcp"
-	"github.com/noble-gase/og/internal/proto"
+	"github.com/noble-gase/oganesson/internal/agent"
+	"github.com/noble-gase/oganesson/internal/ent"
+	"github.com/noble-gase/oganesson/internal/grpc"
+	"github.com/noble-gase/oganesson/internal/http"
+	"github.com/noble-gase/oganesson/internal/mcp"
+	"github.com/noble-gase/oganesson/internal/proto"
 )
 
 type Params struct {

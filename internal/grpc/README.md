@@ -6,7 +6,7 @@ Go gRPC项目快速开发脚手架
 - Redis使用 [go-redis](https://github.com/redis/go-redis)
 - 配置使用 [viper](https://github.com/spf13/viper)
 - 命令行使用 [cli](https://github.com/urfave/cli)
-- 工具包使用 [og](https://github.com/noble-gase/ne)
+- 工具包使用 [og](https://github.com/noble-gase/neon)
 - 使用 [grpc-gateway](https://github.com/grpc-ecosystem/grpc-gateway) 支持 HTTP 服务
 - HTTP 服务支持跨域
 - 支持 proto 参数验证

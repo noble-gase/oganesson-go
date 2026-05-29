@@ -7,7 +7,7 @@ Generate `GetXXX` method for structure fields (support generics !!!), inspired b
 ## 安装
 
 ```shell
-go install github.com/noble-gase/og/cmd/gg@latest
+go install github.com/noble-gase/oganesson/cmd/gg@latest
 ```
 
 ## 使用
@@ -35,7 +35,7 @@ import (
 	"context"
 	"time"
 
-	"github.com/noble-gase/ne/stepkit"
+	"github.com/noble-gase/neon/stepkit"
 )
 
 //go:generate gg --path=demo.go
@@ -69,7 +69,7 @@ package demo
 
 import (
 	"context"
-	"github.com/noble-gase/ne/stepkit"
+	"github.com/noble-gase/neon/stepkit"
 	"time"
 )
 

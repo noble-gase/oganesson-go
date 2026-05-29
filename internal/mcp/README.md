@@ -7,7 +7,7 @@ Go MCP服务快速开发脚手架
 - Redis使用 [go-redis](https://github.com/redis/go-redis)
 - 配置使用 [viper](https://github.com/spf13/viper)
 - 命令行使用 [cli](https://github.com/urfave/cli)
-- 工具包使用 [ne](https://github.com/noble-gase/ne)
+- 工具包使用 [ne](https://github.com/noble-gase/neon)
 - 包含 TraceId、Tool调用日志 中间件
 
 ### 运行

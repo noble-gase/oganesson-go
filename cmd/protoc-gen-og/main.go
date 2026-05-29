@@ -17,7 +17,7 @@ import (
 )
 
 const (
-	version = "v0.5.0"
+	version = "v0.0.1"
 	suffix  = "_http.pb.go"
 )
 
@@ -56,11 +56,11 @@ const (
 	errorPkg    = protogen.GoImportPath("errors")
 	httpPkg     = protogen.GoImportPath("net/http")
 	chiPkg      = protogen.GoImportPath("github.com/go-chi/chi/v5")
-	helperPkg   = protogen.GoImportPath("github.com/noble-gase/ne/helper")
-	resultPkg   = protogen.GoImportPath("github.com/noble-gase/ne/result")
+	helperPkg   = protogen.GoImportPath("github.com/noble-gase/neon/helper")
+	resultPkg   = protogen.GoImportPath("github.com/noble-gase/neon/result")
 	restyPkg    = protogen.GoImportPath("github.com/go-resty/resty/v2")
-	codekitPkg  = protogen.GoImportPath("github.com/noble-gase/ne/codekit")
-	protokitPkg = protogen.GoImportPath("github.com/noble-gase/ne/protokit")
+	codekitPkg  = protogen.GoImportPath("github.com/noble-gase/neon/codekit")
+	protokitPkg = protogen.GoImportPath("github.com/noble-gase/neon/protokit")
 )
 
 func protocVersion(p *protogen.Plugin) string {
