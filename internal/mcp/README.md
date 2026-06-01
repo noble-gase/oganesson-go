@@ -1,13 +1,13 @@
-# og
+# oganesson-go
 
-Go MCP服务快速开发脚手架
+Go 开发脚手架 - MCP服务
 
 - 基于 [mcp-go](https://github.com/mark3labs/mcp-go) 构建
 - 数据库使用 [jet](https://github.com/go-jet/jet)
 - Redis使用 [go-redis](https://github.com/redis/go-redis)
 - 配置使用 [viper](https://github.com/spf13/viper)
 - 命令行使用 [cli](https://github.com/urfave/cli)
-- 工具包使用 [ne](https://github.com/noble-gase/neon)
+- 工具包使用 [neon](https://github.com/noble-gase/neon)
 - 包含 TraceId、Tool调用日志 中间件
 
 ### 运行
@@ -53,15 +53,15 @@ npx mcp-remote@latest http://localhost:9000/mcp/demo --allow-http
 
 ```json
 {
-    "mcpServers": {
-        "iotlink": {
-            "command": "npx",
-            "args": [
-                "mcp-remote@latest",
-                "http://localhost:9000/mcp/demo",
-                "--allow-http"
-            ]
-        }
+  "mcpServers": {
+    "iotlink": {
+      "command": "npx",
+      "args": [
+        "mcp-remote@latest",
+        "http://localhost:9000/mcp/demo",
+        "--allow-http"
+      ]
     }
+  }
 }
 ```

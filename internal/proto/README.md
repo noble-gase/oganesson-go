@@ -1,13 +1,13 @@
-# og
+# oganesson-go
 
-Go Web项目快速开发脚手架
+Go 开发脚手架 - API Proto
 
 - 路由使用 [chi](https://github.com/go-chi/chi)
 - 数据库使用 [jet](https://github.com/go-jet/jet)
 - Redis使用 [go-redis](https://github.com/redis/go-redis)
 - 配置使用 [viper](https://github.com/spf13/viper)
 - 命令行使用 [cli](https://github.com/urfave/cli)
-- 工具包使用 [ne](https://github.com/noble-gase/neon)
+- 工具包使用 [neon](https://github.com/noble-gase/neon)
 - 包含 TraceId、请求日志、跨域 中间件
 - 简单好用的 API Result 统一输出方式
 

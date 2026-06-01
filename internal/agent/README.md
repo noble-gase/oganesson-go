@@ -1,13 +1,13 @@
-# og
+# oganesson-go
 
-Go Agent快速开发脚手架
+Go 开发脚手架 - AI Agent
 
 - 基于 [adk-go](https://github.com/google/adk-go) 构建
 - Redis使用 [go-redis](https://github.com/redis/go-redis)
 - 配置使用 [viper](https://github.com/spf13/viper)
 - 命令行使用 [cli](https://github.com/urfave/cli)
-- 工具包使用 [ne](https://github.com/noble-gase/neon)
-- 目前支持「钉钉机器人」
+- 工具包使用 [neon](https://github.com/noble-gase/neon)
+- 目前仅支持「钉钉机器人」
 
 #### 运行
 
