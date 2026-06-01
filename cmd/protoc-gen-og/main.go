@@ -17,7 +17,7 @@ import (
 )
 
 const (
-	version = "v0.0.1"
+	version = "v0.1.0"
 	suffix  = "_http.pb.go"
 )
 
@@ -56,7 +56,7 @@ const (
 	errorPkg    = protogen.GoImportPath("errors")
 	httpPkg     = protogen.GoImportPath("net/http")
 	chiPkg      = protogen.GoImportPath("github.com/go-chi/chi/v5")
-	helperPkg   = protogen.GoImportPath("github.com/noble-gase/neon/helper")
+	httpkitPkg  = protogen.GoImportPath("github.com/noble-gase/neon/httpkit")
 	resultPkg   = protogen.GoImportPath("github.com/noble-gase/neon/result")
 	restyPkg    = protogen.GoImportPath("github.com/go-resty/resty/v2")
 	codekitPkg  = protogen.GoImportPath("github.com/noble-gase/neon/codekit")
@@ -207,7 +207,7 @@ func genServerMethods(gf *protogen.GeneratedFile, service *protogen.Service, ser
 		gf.P()
 		gf.P("// parse request")
 		gf.P("req := new(", m.Input.GoIdent, ")")
-		gf.P("if err := ", helperPkg.Ident("BindProto"), "(r, req, ", pv, "); err != nil {")
+		gf.P("if err := ", httpkitPkg.Ident("BindProto"), "(r, req, ", pv, "); err != nil {")
 		gf.P(resultPkg.Ident("Err"), "(", codekitPkg.Ident("FromError"), "(err)).JSON(w, r)")
 		gf.P("return")
 		gf.P("}")

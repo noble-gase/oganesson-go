@@ -10,7 +10,8 @@ import (
 	"time"
 
 	"github.com/go-chi/chi/v5/middleware"
-	"github.com/noble-gase/neon/helper"
+	"github.com/noble-gase/neon/httpkit"
+	"github.com/noble-gase/neon/iokit"
 	"github.com/noble-gase/neon/result"
 	"github.com/tidwall/pretty"
 )
@@ -42,7 +43,7 @@ func Log(next http.Handler) http.Handler {
 
 		// 自定义响应
 		ww := middleware.NewWrapResponseWriter(w, r.ProtoMajor)
-		ww.Tee(helper.LimitWriter(buf, MaxLogSize))
+		ww.Tee(iokit.LimitWriter(buf, MaxLogSize))
 
 		defer func() {
 			slog.InfoContext(r.Context(), r.RequestURI,
@@ -68,7 +69,7 @@ func Log(next http.Handler) http.Handler {
 			if len(b) > MaxLogSize {
 				body = string(b[:MaxLogSize])
 			} else {
-				if helper.ContentType(r.Header) == helper.ContentJSON {
+				if httpkit.ContentType(r.Header) == httpkit.ContentJSON {
 					body = string(pretty.Ugly(b))
 				} else {
 					body = string(b)

@@ -5,10 +5,10 @@ import (
 	"{{.Module}}/pkg/cache"
 	"{{.Module}}/pkg/db"
 
-	"github.com/noble-gase/ar"
-	"github.com/noble-gase/ar/dingtalk"
-	"github.com/noble-gase/ar/llmchat"
-	"github.com/noble-gase/ar/model/openai"
+	"github.com/noble-gase/argon"
+	"github.com/noble-gase/argon/channel/dingtalk"
+	"github.com/noble-gase/argon/llmchat"
+	"github.com/noble-gase/argon/model/openai"
 	"github.com/spf13/viper"
 	adk_agent "google.golang.org/adk/agent"
 	"google.golang.org/adk/agent/llmagent"
@@ -26,7 +26,7 @@ type MCPList struct {
 	List []MCPCfg `mapstructure:"mcp"`
 }
 
-func NewAssistant() *ar.Assistant {
+func NewAssistant() *argon.DingTalkAssistant {
 	var mcp MCPList
 	if err := viper.Unmarshal(&mcp); err != nil {
 		panic(err)
@@ -98,7 +98,7 @@ func NewAssistant() *ar.Assistant {
 	dialector := mysql.New(mysql.Config{
 		Conn: db.DB(),
 	})
-	chat, err := ar.NewLLMChat("Demo-Agent", dialector, cache.R(), agent)
+	chat, err := argon.NewLLMChat("Demo-Agent", dialector, cache.R(), agent)
 	if err != nil {
 		panic(err)
 	}
@@ -109,10 +109,9 @@ func NewAssistant() *ar.Assistant {
 		ClientSecret:   viper.GetString("dingtalk.clientSecret"),
 		CardTemplateId: viper.GetString("dingtalk.cardTemplateId"),
 	}
-	assistant, err := ar.NewAssistant(cfg, cache.R(), chat)
+	assistant, err := argon.NewDingTalkAssistant(cfg, cache.R(), chat)
 	if err != nil {
 		panic(err)
 	}
 	return assistant
 }
-

@@ -23,9 +23,9 @@ clientSecret = ""
 cardTemplateId = "xxxxxx.schema"
 
 [llm]
-model = "glm-5"
-apiKey = "sk-xxxxxx"
-baseURL = "https://dashscope.aliyuncs.com/compatible-mode/v1"
+model = "deepseek-v4-flash"
+apiKey = "sk-xxxxxxxxx"
+baseURL = "https://api.deepseek.com"
 
 [[mcp]]
 name = "demo"

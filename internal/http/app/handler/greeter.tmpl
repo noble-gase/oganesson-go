@@ -6,7 +6,7 @@ import (
 	"{{.Module}}/internal/{{.AppPkg}}/service/greeter"
 	"{{.Module}}/pkg/code"
 
-	"github.com/noble-gase/neon/helper"
+	"github.com/noble-gase/neon/httpkit"
 	"github.com/noble-gase/neon/result"
 )
 
@@ -14,7 +14,7 @@ func Hello(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
 	req := new(greeter.ReqHello)
-	if err := helper.BindJSON(r, req); err != nil {
+	if err := httpkit.BindJSON(r, req); err != nil {
 		result.Err(code.ErrParams.WithMsg(err.Error())).JSON(w, r)
 		return
 	}

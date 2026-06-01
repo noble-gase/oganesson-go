@@ -6,14 +6,14 @@ import (
 	"{{.Module}}/pkg/iden"
 
 	"github.com/noble-gase/neon/conv"
-	"github.com/noble-gase/neon/helper"
+	"github.com/noble-gase/neon/httpkit"
 	"google.golang.org/grpc/metadata"
 )
 
 // Iden parse identity into context
 func Iden(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		token := r.Header.Get(helper.HeaderAuthorization)
+		token := r.Header.Get(httpkit.HeaderAuthorization)
 		if len(token) == 0 {
 			next.ServeHTTP(w, r)
 			return

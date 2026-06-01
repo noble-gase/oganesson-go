@@ -117,7 +117,7 @@ func main() {
 		Use:     "gg",
 		Short:   "generate Get methods",
 		Long:    "generate Get methods for structs to avoid panic caused by nil pointer",
-		Version: "v0.0.1",
+		Version: "v0.1.0",
 		Example: internal.CmdExamples(
 			"👉 -- CLI --",
 			"gg --path .",
