@@ -20,9 +20,6 @@ Go 开发脚手架 - gRPC
 # 安装 protoc
 brew install protobuf
 
-# 安装 buf
-brew install bufbuild/buf/buf
-
 # 安装依赖工具
 sh install.sh
 
