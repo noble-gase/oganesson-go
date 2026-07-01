@@ -7,9 +7,9 @@ import (
 	"{{.Module}}/pkg/log"
 
 	"github.com/noble-gase/neon/helper"
-	"google.golang.org/adk/agent"
-	"google.golang.org/adk/model"
-	"google.golang.org/adk/tool"
+	"google.golang.org/adk/v2/agent"
+	"google.golang.org/adk/v2/model"
+	"google.golang.org/adk/v2/tool"
 	"google.golang.org/genai"
 )
 
@@ -21,14 +21,14 @@ type TrackerFactory struct {
 	Trackers map[string]*ChatTracker `json:"trackers"` // key = trace_id
 }
 
-func (f *TrackerFactory) get(ctx agent.CallbackContext) *ChatTracker {
+func (f *TrackerFactory) get(ctx agent.Context) *ChatTracker {
 	f.mu.RLock()
 	defer f.mu.RUnlock()
 
 	return f.Trackers[helper.MDTraceIdFromCtx(ctx)]
 }
 
-func (f *TrackerFactory) add(ctx agent.CallbackContext) {
+func (f *TrackerFactory) add(ctx agent.Context) {
 	f.mu.Lock()
 	defer f.mu.Unlock()
 
@@ -48,14 +48,14 @@ func (f *TrackerFactory) add(ctx agent.CallbackContext) {
 	}
 }
 
-func (f *TrackerFactory) delete(ctx agent.CallbackContext) {
+func (f *TrackerFactory) delete(ctx agent.Context) {
 	f.mu.Lock()
 	defer f.mu.Unlock()
 
 	delete(f.Trackers, helper.MDTraceIdFromCtx(ctx))
 }
 
-func (f *TrackerFactory) BeforeAgent(ctx agent.CallbackContext) (*genai.Content, error) {
+func (f *TrackerFactory) BeforeAgent(ctx agent.Context) (*genai.Content, error) {
 	it := f.get(ctx)
 	if it != nil {
 		it.add(ctx)
@@ -65,7 +65,7 @@ func (f *TrackerFactory) BeforeAgent(ctx agent.CallbackContext) (*genai.Content,
 	return nil, nil
 }
 
-func (f *TrackerFactory) AfterTool(ctx tool.Context, tool tool.Tool, args, result map[string]any, err error) (map[string]any, error) {
+func (f *TrackerFactory) AfterTool(ctx agent.Context, tool tool.Tool, args, result map[string]any, err error) (map[string]any, error) {
 	it := f.get(ctx)
 	if it != nil {
 		it.AfterTool(ctx, tool, args, result, err)
@@ -73,7 +73,7 @@ func (f *TrackerFactory) AfterTool(ctx tool.Context, tool tool.Tool, args, resul
 	return nil, nil
 }
 
-func (f *TrackerFactory) AfterModel(ctx agent.CallbackContext, resp *model.LLMResponse, err error) (*model.LLMResponse, error) {
+func (f *TrackerFactory) AfterModel(ctx agent.Context, resp *model.LLMResponse, err error) (*model.LLMResponse, error) {
 	it := f.get(ctx)
 	if it != nil {
 		it.AfterModel(ctx, resp, err)
@@ -81,7 +81,7 @@ func (f *TrackerFactory) AfterModel(ctx agent.CallbackContext, resp *model.LLMRe
 	return nil, nil
 }
 
-func (f *TrackerFactory) AfterAgent(ctx agent.CallbackContext) (*genai.Content, error) {
+func (f *TrackerFactory) AfterAgent(ctx agent.Context) (*genai.Content, error) {
 	it := f.get(ctx)
 	if it == nil || !it.AfterAgent(ctx) {
 		return nil, nil
@@ -104,7 +104,7 @@ type ChatTracker struct {
 	Agents map[string]*AgentTracker `json:"agents"` // key = agent_name
 }
 
-func (t *ChatTracker) add(ctx agent.CallbackContext) {
+func (t *ChatTracker) add(ctx agent.Context) {
 	t.mu.Lock()
 	defer t.mu.Unlock()
 
@@ -117,7 +117,7 @@ func (t *ChatTracker) add(ctx agent.CallbackContext) {
 	}
 }
 
-func (t *ChatTracker) AfterTool(ctx tool.Context, tool tool.Tool, args, result map[string]any, err error) {
+func (t *ChatTracker) AfterTool(ctx agent.Context, tool tool.Tool, args, result map[string]any, err error) {
 	t.mu.Lock()
 	defer t.mu.Unlock()
 
@@ -132,7 +132,7 @@ func (t *ChatTracker) AfterTool(ctx tool.Context, tool tool.Tool, args, result m
 	})
 }
 
-func (t *ChatTracker) AfterModel(ctx agent.CallbackContext, resp *model.LLMResponse, err error) {
+func (t *ChatTracker) AfterModel(ctx agent.Context, resp *model.LLMResponse, err error) {
 	if resp == nil || resp.UsageMetadata == nil {
 		return
 	}
@@ -149,7 +149,7 @@ func (t *ChatTracker) AfterModel(ctx agent.CallbackContext, resp *model.LLMRespo
 	agent.Tokens.Total += int(resp.UsageMetadata.TotalTokenCount)
 }
 
-func (t *ChatTracker) AfterAgent(ctx agent.CallbackContext) bool {
+func (t *ChatTracker) AfterAgent(ctx agent.Context) bool {
 	t.mu.Lock()
 	defer t.mu.Unlock()
 
