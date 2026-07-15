@@ -1,0 +1,69 @@
+package tools
+
+import (
+	"{{.Module}}/internal/{{.AppPkg}}/hooks"
+	"{{.Module}}/internal/{{.AppPkg}}/tools/demo"
+
+	"github.com/noble-gase/argon/llmchat"
+	"github.com/spf13/viper"
+	adk_agent "google.golang.org/adk/v2/agent"
+	"google.golang.org/adk/v2/agent/llmagent"
+)
+
+type MCPCfg struct {
+	Name        string `mapstructure:"name"`
+	Endpoint    string `mapstructure:"endpoint"`
+	Description string `mapstructure:"description"`
+	Instruction string `mapstructure:"instruction"`
+}
+
+type MCPList struct {
+	List []MCPCfg `mapstructure:"mcp"`
+}
+
+func RegisterMcpTools(agent *llmchat.AgentTool) {
+	var mcp MCPList
+	if err := viper.Unmarshal(&mcp); err != nil {
+		panic(err)
+	}
+
+	for _, v := range mcp.List {
+		agent.Tools = append(agent.Tools, &llmchat.MCPAgent{
+			Name:        v.Name,
+			Endpoints:   []string{v.Endpoint},
+			Description: v.Description,
+			Instruction: v.Instruction,
+			AgentHooks: llmchat.AgentCallback{
+				Before: []adk_agent.BeforeAgentCallback{hooks.Tracker.BeforeAgent},
+				After:  []adk_agent.AfterAgentCallback{hooks.Tracker.AfterAgent},
+			},
+			ToolHooks: llmchat.ToolCallback{
+				After: []llmagent.AfterToolCallback{hooks.Tracker.AfterTool},
+			},
+			ModelHooks: llmchat.ModelCallback{
+				After: []llmagent.AfterModelCallback{hooks.Tracker.AfterModel},
+			},
+		})
+	}
+}
+
+func RegisterFuncTools(agent *llmchat.AgentTool) {
+	agent.Tools = append(agent.Tools, &llmchat.FuncAgent{
+		Name:        "weather",
+		Description: "天气查询助手",
+		Instruction: "根据用户提供的城市，调用工具查询天气并返回结果",
+		Tools: []llmchat.ToolBuilder{
+			demo.NewWeatherTool(),
+		},
+		AgentHooks: llmchat.AgentCallback{
+			Before: []adk_agent.BeforeAgentCallback{hooks.Tracker.BeforeAgent},
+			After:  []adk_agent.AfterAgentCallback{hooks.Tracker.AfterAgent},
+		},
+		ToolHooks: llmchat.ToolCallback{
+			After: []llmagent.AfterToolCallback{hooks.Tracker.AfterTool},
+		},
+		ModelHooks: llmchat.ModelCallback{
+			After: []llmagent.AfterModelCallback{hooks.Tracker.AfterModel},
+		},
+	})
+}

@@ -2,6 +2,7 @@ package server
 
 import (
 	"{{.Module}}/internal/{{.AppPkg}}/hooks"
+	"{{.Module}}/internal/{{.AppPkg}}/tools"
 	"{{.Module}}/pkg/cache"
 	"{{.Module}}/pkg/db"
 
@@ -15,24 +16,7 @@ import (
 	"gorm.io/driver/mysql"
 )
 
-type MCPCfg struct {
-	Name        string `mapstructure:"name"`
-	Endpoint    string `mapstructure:"endpoint"`
-	Description string `mapstructure:"description"`
-	Instruction string `mapstructure:"instruction"`
-}
-
-type MCPList struct {
-	List []MCPCfg `mapstructure:"mcp"`
-}
-
 func NewAssistant() *argon.DingTalkAssistant {
-	var mcp MCPList
-	if err := viper.Unmarshal(&mcp); err != nil {
-		panic(err)
-	}
-
-	// agent
 	agent := &llmchat.AgentTool{
 		Name:        "demo",
 		Description: "Demo智能助手",
@@ -47,52 +31,21 @@ func NewAssistant() *argon.DingTalkAssistant {
 				ModelName: viper.GetString("llm.model"),
 			},
 		},
-		Tools: make([]llmchat.AgentBuilder, 0, len(mcp.List)),
 		AgentHooks: llmchat.AgentCallback{
-			Before: []adk_agent.BeforeAgentCallback{
-				hooks.Tracker.BeforeAgent,
-			},
-			After: []adk_agent.AfterAgentCallback{
-				hooks.Tracker.AfterAgent,
-			},
+			Before: []adk_agent.BeforeAgentCallback{hooks.Tracker.BeforeAgent},
+			After:  []adk_agent.AfterAgentCallback{hooks.Tracker.AfterAgent},
 		},
 		ToolHooks: llmchat.ToolCallback{
-			After: []llmagent.AfterToolCallback{
-				hooks.Tracker.AfterTool,
-			},
+			After: []llmagent.AfterToolCallback{hooks.Tracker.AfterTool},
 		},
 		ModelHooks: llmchat.ModelCallback{
-			After: []llmagent.AfterModelCallback{
-				hooks.Tracker.AfterModel,
-			},
+			After: []llmagent.AfterModelCallback{hooks.Tracker.AfterModel},
 		},
 	}
-	for _, v := range mcp.List {
-		agent.Tools = append(agent.Tools, &llmchat.MCPAgent{
-			Name:        v.Name,
-			Endpoints:   []string{v.Endpoint},
-			Description: v.Description,
-			Instruction: v.Instruction,
-			AgentHooks: llmchat.AgentCallback{
-				Before: []adk_agent.BeforeAgentCallback{
-					hooks.Tracker.BeforeAgent,
-				},
-				After: []adk_agent.AfterAgentCallback{
-					hooks.Tracker.AfterAgent,
-				},
-			},
-			ToolHooks: llmchat.ToolCallback{
-				After: []llmagent.AfterToolCallback{
-					hooks.Tracker.AfterTool,
-				},
-			},
-			ModelHooks: llmchat.ModelCallback{
-				After: []llmagent.AfterModelCallback{
-					hooks.Tracker.AfterModel,
-				},
-			},
-		})
-	}
+
+	// tools
+	tools.RegisterMcpTools(agent)
+	tools.RegisterFuncTools(agent)
 
 	// llmchat
 	dialector := mysql.New(mysql.Config{

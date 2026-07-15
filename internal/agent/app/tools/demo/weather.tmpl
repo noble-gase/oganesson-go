@@ -1,0 +1,38 @@
+package demo
+
+import (
+	adk_agent "google.golang.org/adk/v2/agent"
+
+	"github.com/noble-gase/argon/llmchat"
+)
+
+// WeatherArgs 工具入参（字段名来自 json tag，jsonschema tag 作为参数描述）
+type WeatherArgs struct {
+	City string `json:"city" jsonschema:"城市名称，例如：北京"`
+}
+
+// WeatherResult 工具出参
+type WeatherResult struct {
+	City    string `json:"city"`
+	Weather string `json:"weather"`
+	Temp    string `json:"temp"`
+}
+
+// weatherHandler 实际业务逻辑
+func weatherHandler(ctx adk_agent.Context, args WeatherArgs) (WeatherResult, error) {
+	// TODO: 调用真实天气 API
+	return WeatherResult{
+		City:    args.City,
+		Weather: "晴",
+		Temp:    "26℃",
+	}, nil
+}
+
+// NewWeatherTool 构建 function tool
+func NewWeatherTool() *llmchat.FuncTool[WeatherArgs, WeatherResult] {
+	return &llmchat.FuncTool[WeatherArgs, WeatherResult]{
+		Name:        "weather",
+		Description: "查询指定城市的天气情况",
+		Handler:     weatherHandler,
+	}
+}
