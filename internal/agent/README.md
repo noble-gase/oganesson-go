@@ -7,7 +7,7 @@ Go 开发脚手架 - AI Agent
 - 配置使用 [viper](https://github.com/spf13/viper)
 - 命令行使用 [cli](https://github.com/urfave/cli)
 - 工具包使用 [neon](https://github.com/noble-gase/neon)
-- 目前仅支持「钉钉机器人」
+- 聊天机器人：钉钉
 
 #### 运行
 
