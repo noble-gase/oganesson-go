@@ -124,6 +124,7 @@ func New() *cobra.Command {
 			}
 			return nil
 		},
+		Example: internal.CmdExamples("og new demo"),
 		Run: func(_ *cobra.Command, args []string) {
 			workDir := args[0]
 
@@ -189,6 +190,10 @@ func App() *cobra.Command {
 			}
 			return nil
 		},
+		Example: internal.CmdExamples(
+			"og app foo",
+			"og app foo bar",
+		),
 		Run: func(_ *cobra.Command, args []string) {
 			fmt.Println("⌛️ Parse go.mod")
 
