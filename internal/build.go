@@ -44,6 +44,9 @@ func InitHttpProject(root, mod string, pb bool, apps ...string) {
 		AppName: root,
 		DockerF: "Dockerfile",
 	}
+	if root == "." {
+		params.AppName, _ = GetCurDirName()
+	}
 
 	genRoot(root, params, fsys)
 	genPkg(root, params, fsys)
@@ -72,7 +75,7 @@ func InitHttpProject(root, mod string, pb bool, apps ...string) {
 	}
 }
 
-func InitHttpApp(root, mod, name string, pb bool) {
+func InitHttpApp(mod, name string, pb bool) {
 	fsys := http.FS
 	if pb {
 		fsys = proto.FS
@@ -88,10 +91,10 @@ func InitHttpApp(root, mod, name string, pb bool) {
 	}
 
 	if pb {
-		genApi(root, params, fsys, name)
+		genApi(".", params, fsys, name)
 	}
-	genApp(root, params, fsys, name)
-	genCmd(root, params, fsys, name)
+	genApp(".", params, fsys, name)
+	genCmd(".", params, fsys, name)
 }
 
 func InitGrpcProject(root, mod string, apps ...string) {
@@ -102,6 +105,9 @@ func InitGrpcProject(root, mod string, apps ...string) {
 		AppPkg:  "app",
 		AppName: root,
 		DockerF: "Dockerfile",
+	}
+	if root == "." {
+		params.AppName, _ = GetCurDirName()
 	}
 
 	genRoot(root, params, grpc.FS)
@@ -127,7 +133,7 @@ func InitGrpcProject(root, mod string, apps ...string) {
 	}
 }
 
-func InitGrpcApp(root, mod, name string) {
+func InitGrpcApp(mod, name string) {
 	params := &Params{
 		Module:  mod,
 		ApiPkg:  "api/" + name,
@@ -137,9 +143,9 @@ func InitGrpcApp(root, mod, name string) {
 		DockerF: "Dockerfile." + name,
 	}
 
-	genApi(root, params, grpc.FS, name)
-	genApp(root, params, grpc.FS, name)
-	genCmd(root, params, grpc.FS, name)
+	genApi(".", params, grpc.FS, name)
+	genApp(".", params, grpc.FS, name)
+	genCmd(".", params, grpc.FS, name)
 }
 
 func InitMcpProject(root, mod string, apps ...string) {
@@ -148,6 +154,9 @@ func InitMcpProject(root, mod string, apps ...string) {
 		AppPkg:  "app",
 		AppName: root,
 		DockerF: "Dockerfile",
+	}
+	if root == "." {
+		params.AppName, _ = GetCurDirName()
 	}
 
 	genRoot(root, params, mcp.FS)
@@ -169,7 +178,7 @@ func InitMcpProject(root, mod string, apps ...string) {
 	}
 }
 
-func InitMcpApp(root, mod, name string) {
+func InitMcpApp(mod, name string) {
 	params := &Params{
 		Module:  mod,
 		AppPkg:  "app/" + name,
@@ -177,8 +186,8 @@ func InitMcpApp(root, mod, name string) {
 		DockerF: "Dockerfile." + name,
 	}
 
-	genApp(root, params, mcp.FS, name)
-	genCmd(root, params, mcp.FS, name)
+	genApp(".", params, mcp.FS, name)
+	genCmd(".", params, mcp.FS, name)
 }
 
 func InitAgentProject(root, mod string, apps ...string) {
@@ -187,6 +196,9 @@ func InitAgentProject(root, mod string, apps ...string) {
 		AppPkg:  "app",
 		AppName: root,
 		DockerF: "Dockerfile",
+	}
+	if root == "." {
+		params.AppName, _ = GetCurDirName()
 	}
 
 	genRoot(root, params, agent.FS)
@@ -208,7 +220,7 @@ func InitAgentProject(root, mod string, apps ...string) {
 	}
 }
 
-func InitAgentApp(root, mod, name string) {
+func InitAgentApp(mod, name string) {
 	params := &Params{
 		Module:  mod,
 		AppPkg:  "app/" + name,
@@ -216,11 +228,11 @@ func InitAgentApp(root, mod, name string) {
 		DockerF: "Dockerfile." + name,
 	}
 
-	genApp(root, params, agent.FS, name)
-	genCmd(root, params, agent.FS, name)
+	genApp(".", params, agent.FS, name)
+	genCmd(".", params, agent.FS, name)
 }
 
-func InitEnt(root, mod string, name ...string) {
+func InitEnt(mod string, name ...string) {
 	params := &Params{
 		Module:  mod,
 		AppName: "ent",
@@ -233,7 +245,7 @@ func InitEnt(root, mod string, name ...string) {
 		if d.IsDir() || filepath.Ext(path) == ".go" {
 			return nil
 		}
-		output := genOutput(root+"/internal/ent", path, name...)
+		output := genOutput("./internal/ent", path, name...)
 		if len(name) != 0 {
 			output = strings.Replace(output, "/ent", "/ent/"+name[0], 1)
 		}
@@ -376,7 +388,7 @@ func buildTmpl(fsys embed.FS, path, output string, params *Params) {
 	fmt.Println(output)
 }
 
-func GetCurDir() (string, error) {
+func GetCurDirName() (string, error) {
 	wd, err := os.Getwd()
 	if err != nil {
 		return "", err
